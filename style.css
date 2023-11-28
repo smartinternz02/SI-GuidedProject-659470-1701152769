@@ -11,18 +11,42 @@
     color: rgb(255, 255, 255);
 }
 
-
-
 /* Css for Login Page */
 
 .login-form{
-    margin-top: 75px;
+    margin-top: 50px;
     
 }
-.input{
-    padding: 150px;
-    margin-bottom: 30px;
+.submit-btn{
+    background-color:#57b846;
+    width: 100%;
+    justify-content: center;
+    border-radius:45px;
+    align-items: center;
+    padding: 5px;
+    border-style: none;
+  
 }
-.label{
-    margin-bottom: 150px;
+.textup{
+    margin-bottom: 10px;
 }
+.form-outline{
+    font-family: Poppins-SemiBold;
+    font-size: 18px;
+    color: #555;
+    line-height: 1.2;
+    display: block;
+    width: 100%;
+    height: 52px;
+    background: 10 0;
+    padding: 0 5px;
+  }
+input {
+    outline: none;
+    border: none;
+    background: aliceblue;
+    padding: 8px;
+    width: 100%;
+    border-radius: 23px;
+    text-align: left;  
+  }
