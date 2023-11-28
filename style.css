@@ -1,12 +1,28 @@
-.navbar{
-    background-color: rgb(199, 199, 199);
-}
 
-.nav-link {
-
-    color: aliceblue;
-}
-
-.container{
+.container {
     padding: 75px;
+}
+#heading1 {
+    color: #488948;
+    margin-bottom: 3%;
+    
+}
+.navbar a {
+    color: rgb(255, 255, 255);
+}
+
+
+
+/* Css for Login Page */
+
+.login-form{
+    margin-top: 75px;
+    
+}
+.input{
+    padding: 150px;
+    margin-bottom: 30px;
+}
+.label{
+    margin-bottom: 150px;
 }
