@@ -40,32 +40,30 @@
 		<div class="container">
             <div class="row justify-content-center align-items-center g-3">
             	<div class="col">
-				<h1>Please Enter the Details for Registration</h1>
+					<h3>Register Here!</h3>
+                    <p>Have an account,<a href="/Login">Sign Up</a></p> 
 				<div class="login-form"> 
 					<form action = "submit", method = "post">
 
-		<label>Name:</label>
-		<input type="text" name="Name" placeholder="Please Enter the Name" required = ""><br>
-		<br>
-	
-		<label>Email:</label>
-		<input type="Email" name="Email" placeholder="Please Enter the Email" required = ""><br>
-		<br>
-	
-		<label>Mobile No:</label>
-		<input type="number" name="MobileNo" placeholder="Please Enter the Mobile no" required = ""><br>
-		<br>
-	
-		<label>Password:</label>
-		<input type="Password" name="Password" placeholder="Please Enter the Password" required = ""><br>
-		<br>
-	
+		<div class="input-box">  
+		<label>Name :</label>
+		<input type="text" name="Name"  placeholder="Enter your Name" required = ""><br>
+				
+		<label>Email :</label>
+		<input type="Email" name="Email" placeholder="Enter your Email ID" required = ""><br>
+			
+		<label>Mobile No :</label>
+		<input type="number" name="MobileNo" placeholder="Enter your Mobile Number" required = ""><br>
+			
+		<label>Password :</label>
+		<input type="Password" name="Password" placeholder="Enter the Password" required = ""><br>
+			
 		<button type ="submit" class ="submit-btn">Submit</button>
 					</form>
 				</div>
 				</div>
-					
-				<div class="col">Image to insert</div>
+			</div>
+				<div class="col"> <img src="{{ url_for('static', filename='images/sign-up.png') }}" class="img-fluid rounded-top height:auto " alt="Image"> </div>
         </div>
 		{{pred}}
 	</section>

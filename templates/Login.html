@@ -48,14 +48,16 @@
                         <label for = "Password" class ="textup">Password</label><br>
                         <input type = "Password" name ="Password" id="Password" placeholder="Enter your password" required><br>
                     </div><br>
-                        <button type ="submit" class ="submit-btn">Submit</button>
+                        <button type ="submit" class ="submit-btn"><img width="26" height="26" src="https://img.icons8.com/metro/26/enter-2.png" alt="enter-2"/><span> Login </span></button>
                     </form><br>
                 <p>Or Sign in with social platforms</p>
                 {{UserInformation}}
                 {{pred}}
                 </div>
               </div>
-              <div class="col">Image to insert</div>
+              <div class="col">
+                <img src="{{ url_for('static', filename='images/Login.png') }}" class="img-fluid rounded-top height:auto " alt="Image">
+              </div>
         </div>
     </section>
 </body>
