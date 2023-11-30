@@ -37,25 +37,26 @@
             <div class="row justify-content-center align-items-center g-3">
                 <div class="col">
                     <h3>Welcome Back!</h3>
-                    <p>Don't have an account,Sign Up</p>
+                    <p>Don't have an account,<a href="/register">Sign Up</a></p> 
                 <div class="login-form"> 
-                    <form action="#" method="post">
+                    <form action ="submit1", method = "post">
                     <div class="form-outline mb-4">   
-                        <label for="Email" class="textup">Username</label><br>
-                        <input type="email"   name="Email" id="Email" placeholder="Enter your email" required><br>
+                        <label for ="Email" class="textup">Username</label><br>
+                        <input type ="Email" name="Email" id="Email" placeholder="Enter your email" required><br>
                     </div>
                     <div class="form-outline mb-4 "> 
-                        <label for="Password" class="textup">Password</label><br>
-                        <input type="password" name="Password" id="Password" placeholder="Enter your password" required><br>
+                        <label for = "Password" class ="textup">Password</label><br>
+                        <input type = "Password" name ="Password" id="Password" placeholder="Enter your password" required><br>
                     </div><br>
-                        <button type="submit" class="submit-btn">Submit</button>
+                        <button type ="submit" class ="submit-btn">Submit</button>
                     </form><br>
                 <p>Or Sign in with social platforms</p>
-                    </div>    
+                {{UserInformation}}
+                {{pred}}
                 </div>
-                <div class="col">Image to insert</div>
-               
-            </div>
+                <div>
+            <div class="col">Image to insert</div>
+           </div>
         </div>
     </section>
 </body>
