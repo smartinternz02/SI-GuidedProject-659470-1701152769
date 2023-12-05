@@ -16,7 +16,7 @@ def home():
 
 @app.route('/Login')
 def login():
-    return render_template("/login.html")
+    return render_template("Login.html")
 
 @app.route('/register')
 def register():
@@ -68,4 +68,4 @@ def login1():
         return render_template('login.html', pred ="Login unsuccessful. Incorrect username/password !") 
 
 if __name__ == "__main__":
-    app.run(debug = False,port = 8080)
+    app.run(host="0.0.0.0", debug= False)
