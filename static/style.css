@@ -1,0 +1,60 @@
+
+.container {
+    padding: 75px;
+}
+#heading1 {
+    color: #488948;
+    margin-bottom: 3%;
+    
+}
+.navbar a {
+    color: rgb(255, 255, 255);
+}
+
+/* Css for Login Page */
+
+.submit-btn{
+    background-color : transparent;
+    width: 100%;
+    justify-content: center;
+    border-radius:45px;
+    align-items: center;
+    padding: 5px;
+    border-style: groove;
+    height: 50px;
+  
+}
+.textup{
+    margin-bottom: 10px;
+}
+.form-outline{
+    font-family: Poppins-SemiBold;
+    font-size: 18px;
+    color: #555;
+    line-height: 1.2;
+    display: block;
+    width: 100%;
+    background: 10 0;
+    padding: 0 5px;
+  }
+input {
+    outline: none;
+    border: none;
+    background: aliceblue;
+    padding: 15px;
+    width: 100%;
+    border-radius: 23px;
+    text-align: left;  
+    display: flex;
+    align-items: center;
+  }
+
+  .submit-btn:hover {
+    background-color: #04AA6D;
+    color: white;
+    border-style: none;
+  }
+  .img-fluid {
+
+    width: 470px;
+  }
