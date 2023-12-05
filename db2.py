@@ -37,7 +37,7 @@ def register1():
     account = ibm_db.fetch_assoc(stmt)
     print(account)
     if account:
-        return render_template('login.html', pred="You are already a member, please login using your details")
+        return render_template('Login.html', pred="You are already a member, please login using your details")
     else:
         insert_sql = "INSERT INTO  REGISTER VALUES (?, ?, ?,?)"
         prep_stmt = ibm_db.prepare(conn, insert_sql)
@@ -46,7 +46,7 @@ def register1():
         ibm_db.bind_param(prep_stmt, 3, MobileNo)
         ibm_db.bind_param(prep_stmt, 4, Password)
         ibm_db.execute(prep_stmt)
-        return render_template('login.html',pred ="Registration Successful, please login using your details")
+        return render_template('Login.html',pred ="Registration Successful, please login using your details")
     
 
 
@@ -63,9 +63,9 @@ def login1():
     print(account)
     print(Email,Password)
     if account:
-            return render_template('login.html', pred = "Login successful")
+            return render_template('Login.html', pred = "Login successful")
     else:
-        return render_template('login.html', pred ="Login unsuccessful. Incorrect username/password !") 
+        return render_template('Login.html', pred ="Login unsuccessful. Incorrect username/password !") 
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug= False)
