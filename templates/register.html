@@ -24,19 +24,19 @@
 			<div class="collapse navbar-collapse justify-content-end navbar-brand" id="navbarNav">
 				<ul class="nav nav-underline ">
 					<li class="nav-item">
-						<a class="nav-link  " aria-current="page" href="/">Home</a>
+						<a class="nav-link  " aria-current="page" href="/Home">Home</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link " href="#">Ride Sharing</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link " href="#">Co2 Emission</a>
+						<a class="nav-link " href="/co2calculator">Co2 Emission</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link " href="#">Contact Us</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link " href="/Login">Login</a>
+						<a class="nav-link " href="/">Login</a>
 					</li>
 				</ul>
 			</div>
@@ -48,23 +48,26 @@
 			<div class="row justify-content-center align-items-center g-3">
 				<div class="col">
 					<h3>Register Here!</h3>
-					<p>Have an account,<a href="/Login">Login</a></p>
+					<p>Have an account,<a href="/">Login</a></p>
 					<div class="login-form">
 						<form action="submit" , method="post">
 
 							<div class="input-box">
 								<div class="form-outline mb-3">
 									<label>Name :</label>
-									<input type="text" name="Name" placeholder="Enter your Name" required="">
+									<input type="text" name="Username" placeholder="Enter your Name" required="">
 								</div>
 								<label>Email :</label>
 								<input type="Email" name="Email" placeholder="Enter your Email ID" required=""><br>
 
-								<label>Mobile No :</label>
-								<input type="tel" name="MobileNo" placeholder="Enter your Mobile Number" required=""><br>
-
 								<label>Password :</label>
 								<input type="Password" name="Password" placeholder="Enter the Password" required=""><br>
+
+								<label>Mobile No :</label>
+								<input type="tel" name="MobileNo" placeholder="Enter your Mobile Number" required=""><br>
+								{{msg}}
+
+								
 								<button type="submit" class="submit-btn">Submit</button>
 						</form>
 					</div>
