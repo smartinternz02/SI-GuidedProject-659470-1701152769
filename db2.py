@@ -2,7 +2,9 @@ import re
 import os
 from flask import Flask, render_template, request, redirect, url_for, session
 import ibm_db
-import requests
+import ibm_boto3
+from ibm_botocore.client import Config,ClientError
+
 
 app = Flask(__name__)
 app.secret_key =os.urandom(24)
@@ -10,6 +12,16 @@ app.secret_key =os.urandom(24)
 conn = ibm_db.connect("DATABASE=bludb;HOSTNAME=2f3279a5-73d1-4859-88f0-a6c3e6b4b907.c3n41cmd0nqnrk39u98g.databases.appdomain.cloud;PORT=30756;SECURITY=SSL;SSLServerCertificate=DigiCertGlobalRootCA.crt;UID=swd16809;PWD=YwKdLfC6EXVpoXtw;", '', '')
 
 print("connected")
+
+COS_ENDPOINT = "https://s3.us-south.cloud-object-storage.appdomain.cloud"
+COS_API_KEY_ID = "Jf5e7IWW1w-MECWEjSeO8h7JDyxpTa16-QQ0KPyBx8_3"
+COS_INSTANCE_CRN ="crn:v1:bluemix:public:cloud-object-storage:global:a/a0de583e4eb64401b18b468751515222:7761627b-6d34-48c4-a04c-9771c3f8e625:bucket:ibm-skillbuildtest"
+
+# cos = ibm_boto3.client("s3",
+#                        ibm_api_key_id=COS_API_KEY_ID,
+#                        ibm_service_instance_id = COS_INSTANCE_CRN,
+#                        config=Config(signature_version="oauth"),
+#                        endpoing_url=COS_ENDPOINT)
 
 @app.route('/')
 def login():
@@ -27,7 +39,10 @@ def home():
 
 @app.route('/register')
 def register():
-    return render_template("register.html")
+    if 'id' in session:
+        return redirect('/Home')
+    else:
+        return render_template("register.html")
     
 @app.route('/submit',methods=['GET','POST'])
 def register1():
@@ -85,12 +100,11 @@ def login1():
         print(account)
         if account:
             session['loggedin'] = True
-            session['userid']=account['USERID']
             session['id'] = account['USERID']
             userid = account['USERNAME']
             session['USERNAME'] = account['USERNAME']
             msg = 'Logged in Successfully'
-            return render_template('home.html',msg=msg)
+            return render_template('home.html',msg=msg,userid=userid)
         else:
             msg = 'Incorrect Username/Password'
         return render_template('Login.html', msg=msg)
@@ -101,15 +115,134 @@ def logout():
     session.pop('loggedin',None)
     session.pop('id',None)
     session.pop('userid',None)
-    return render_template('Login.html')
+    return redirect('/')
 
 
 @app.route('/co2calculator')
 def co2():
     if 'id' in session:
-        return render_template("co2calculator.html")
+        return render_template("co2calculator.html")         
     else:
         return redirect('/')
+    
+@app.route('/ride_booking',methods=['POST','GET'])
+def ride():
+    if 'id' in session:
+        try:
+            sql = "SELECT * FROM RIDEPUBLISH"
+            stmt = ibm_db.prepare(conn,sql)
+            ibm_db.execute(stmt)
+            data = []
+            while True:
+                row = ibm_db.fetch_assoc(stmt)
+                if not row:
+                    break  # Exit the loop when there are no more rows
+                data.append(row)
+            data = data if data else []
+            print(type(data))
+            print(data)
+            return render_template("ride_booking.html",data=data)
+        except Exception as e:
+            # Handle any exceptions that may occur during database operations
+            return f"An error occurred: {str(e)}"
+
+    else:
+        return redirect('/')
+
+
+#     num2 = request.form['publish']
+#     print(num2)
+#     sql = "SELECT * FROM RIDEPUBLISH WHERE USERID="+str(session['id'])
+#     stmt = ibm_db.prepare(conn,sql)
+#     ibm_db.execute(stmt)
+#     account = ibm_db.fetch_assoc(stmt)
+#     return render_template("ride_booking.html",num2=num2)
+    
+# @app.route('/ride_list',methods=['POST','GET'])
+# def ridel():
+#     if 'id' in session:
+#         sql = "SELECT * FROM RIDEPUBLISH WHERE USERID="+str(session['id'])
+#         stmt = ibm_db.prepare(conn,sql)
+#         ibm_db.execute(stmt)
+#         data = ibm_db.fetch_assoc(stmt)
+#         return render_template("ride_booking.html",data=data)
+       
+
+
+
+@app.route("/publishDetails1")
+def publishing():
+    if 'id' in session:
+        return render_template("publish.html")
+    else:
+        return redirect('/')
+
+@app.route("/publish", methods=['POST','GET'])
+def publishing1():
+    global ProfilePic
+
+    if 'id' in session:        
+
+        sql = "SELECT * FROM REGISTER WHERE USERID="+str(session['id'])
+        stmt = ibm_db.prepare(conn,sql)
+        ibm_db.execute(stmt)
+        account = ibm_db.fetch_assoc(stmt)
+        print(account)
+
+        if request.method == 'POST':
+                # ProfilePic = request.files['ProfilePic']
+                FullName = request.form['FullName']
+                PhoneNumber = request.form['PhoneNumber']
+                Email = request.form['Email']
+                Password = request.form['Password']
+                Location = request.form['Location']
+                Destination = request.form['Destination']
+                DateTime = request.form['DateTime']
+                NumberofPeople = request.form['NumberofPeople']
+                insert_sql = "INSERT INTO RIDEPUBLISH VALUES (?,?,?,?,?,?,?,?,?)"
+                prep_stmt = ibm_db.prepare(conn, insert_sql)
+                ibm_db.bind_param(prep_stmt,1,FullName)
+                ibm_db.bind_param(prep_stmt,2,PhoneNumber)
+                ibm_db.bind_param(prep_stmt,3,Email)
+                ibm_db.bind_param(prep_stmt,4,Password)
+                ibm_db.bind_param(prep_stmt,5,Location)
+                ibm_db.bind_param(prep_stmt,6,Destination)
+                ibm_db.bind_param(prep_stmt,7,DateTime)
+                ibm_db.bind_param(prep_stmt,8,NumberofPeople)
+                ibm_db.bind_param(prep_stmt,9,account['USERID'])
+                ibm_db.execute(prep_stmt)
+                return redirect('/ride_booking')
+    else:
+            return redirect('/')
+    
+
+
+        # basepath = os.path.dirname(__file__)
+
+        # filepath = os.path.join(basepath,'profilepic','.jpg')
+
+        # ProfilePic.save(filepath)
+        # cos.upload_file(Filenmae=filepath,
+        #                 Bucket='profilepictures27', Key=FullName + '.jpg')
+        
+        # print(ProfilePic)
+        # sql = "SELECT * FROM RIDEPUBLISH WHERE USERID="+ str(session['USERID'])
+        # stmt = ibm_db.prepare(conn,sql)
+        # ibm_db.execute(stmt)
+        # row = []
+        # while True:
+        #     date = ibm_db.fetch_assoc(stmt)
+        #     if not data:
+        #         break
+        #     else:
+        #         data['USERID'] = str(data['USERID'])
+        #         row.append(data)
+        #     print('rows: ',row)
+    
+    
+
+
+        
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug= True)

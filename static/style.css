@@ -1,60 +1,126 @@
-
 .container {
-    padding: 75px;
+  padding: 75px;
 }
+
 #heading1 {
-    color: #488948;
-    margin-bottom: 3%;
-    
+  color: #488948;
+  margin-bottom: 3%;
+
 }
+
 .navbar a {
-    color: rgb(255, 255, 255);
+  color: rgb(255, 255, 255);
 }
 
 /* Css for Login Page */
 
-.submit-btn{
-    background-color : transparent;
-    width: 100%;
-    justify-content: center;
-    border-radius:45px;
-    align-items: center;
-    padding: 5px;
-    border-style: groove;
-    height: 50px;
-  
+.submit-btn {
+  background-color: transparent;
+  width: 100%;
+  justify-content: center;
+  border-radius: 45px;
+  align-items: center;
+  padding: 5px;
+  border-style: groove;
+  height: 50px;
+
 }
-.textup{
-    margin-bottom: 10px;
+
+.textup {
+  margin-bottom: 10px;
 }
-.form-outline{
-    font-family: Poppins-SemiBold;
-    font-size: 18px;
-    color: #555;
-    line-height: 1.2;
-    display: block;
-    width: 100%;
-    background: 10 0;
-    padding: 0 5px;
-  }
+
+.form-outline {
+  font-family: Poppins-SemiBold;
+  font-size: 18px;
+  color: #555;
+  line-height: 1.2;
+  display: block;
+  width: 100%;
+  background: 10 0;
+  padding: 0 5px;
+}
+
 input {
-    outline: none;
-    border: none;
-    background: aliceblue;
-    padding: 15px;
-    width: 100%;
-    border-radius: 23px;
-    text-align: left;  
-    display: flex;
-    align-items: center;
-  }
+  outline: none;
+  border: none;
+  background: aliceblue;
+  padding: 15px;
+  width: 100%;
+  border-radius: 23px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+}
 
-  .submit-btn:hover {
-    background-color: #04AA6D;
-    color: white;
-    border-style: none;
-  }
-  .img-fluid {
+.submit-btn:hover {
+  background-color: #04AA6D;
+  color: white;
+  border-style: none;
+}
 
-    width: 470px;
-  }
+.img-fluid {
+
+  width: 470px;
+}
+
+.profilepic {
+
+  margin-bottom: 24px;
+}
+.procir{
+  margin: auto;
+  align-items: center;
+}
+.pickup_det.input {
+  margin-top: 19px;
+
+}
+
+.sel-form,
+.pub1 {
+
+  margin: 10px;
+  padding: 10px;
+}
+
+.selector_det.input[type="search"] {
+  width: 22%;
+  display: block;
+}
+
+.publish-sub{
+  width: 100%;
+  height: 100%;
+
+}
+.publish-btn {
+  width: 10%;
+  height: 100%;
+  margin-bottom: 40px;
+}
+
+.search-btn {
+  background-color: transparent;
+  width: 50%;
+  justify-content: center;
+  border-radius: 209px;
+  align-items: center;
+  padding: 5px;
+  border-style: groove;
+  height: 50px;
+  margin-top: 5px;
+}
+
+.search-btn:hover {
+  background-color: #0d6efd;
+  color: white;
+  border-style: none;
+}
+
+#file-input-label {
+  font-size: 1.3em;
+  padding: 10px 15px;
+  border: 1px solid black;
+  border-radius: 4%;
+}

@@ -21,7 +21,7 @@
                 <a class="nav-link  " aria-current="active" href="/Home">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link "  href="#">Ride Sharing</a>
+                <a class="nav-link "  href="/ride_booking">Ride Sharing</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link "  href="/co2calculator">Co2 Emission</a>
@@ -41,8 +41,8 @@
           <div class="row">
             <div class="col">
               <h1 id="heading1">Climate Changes is Serious <br> Problem </h1>
-              <p>For reducing it we came with this new idea for car sharing and Co2 Emission is calculated by our website</p>
-              {{USERNAME}} <br />
+              <p>For reducing it we came with this new idea for car sharing and Co2 Emission is calculated by our website {{userid}}</p>
+               <br/>
             </div>
             <div class="col">
               <img src="{{ url_for('static', filename='images/Home-page-vector.png') }}" class="img-fluid rounded-top height:auto " alt="Image">
