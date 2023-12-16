@@ -27,7 +27,7 @@
                         <a class="nav-link  " aria-current="active" href="/Home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="#">Ride Sharing</a>
+                        <a class="nav-link " href="/ride_booking">Ride Sharing</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link " href="/co2calculator">Co2 Emission</a>
@@ -51,7 +51,7 @@
                 <div class="pickup_det">
                     <h2>Your pick of rides at low prices</h2>
                     <div class="container sel-form">
-                        <form action="ride-sel">
+                        <form action="ride_booking" method="GET">
                             <div class="row align-items-start">
                                 <div class="col-md">
                                     <input type="search" name="lev_form" id="" placeholder="Leaving from...">
@@ -70,21 +70,30 @@
                     </div>
                 </div>
                 <div class="container">
-                    <div class="col-md-6 py-3 table table-responsive">
-                        {% if data %}
-                        <table>
-                            <tr>
-                                {% for key in data[0].keys() %}
-                                    <th style="text-align: center;">{{ key }}</th>
-                                {% endfor %}
-                            </tr>
-                            {% for row in data %}
+                    <div class="col-10">
+                        <!-- {% if data %} -->
+                        <table class="table   text-center">
+                                <thead class="thead-light">
+                                  <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Phone</th>
+                                    <th scope="col">Leaving From</th>
+                                    <th scope="col">Going</th>
+                                    <th scope="col">People</th>
+                                    <th scope="col">Booking</th>
+                                  </tr>
+                                </thead>
+                            
+                                {% for row in data %}
                                 <tr>
                                     {% for value in row.values() %}
                                         <td style="text-align: center;">{{ value }}</td>
-                                    {% endfor %}
+                                    {% endfor %}                          
+                                    <td>
+                                        <button class="btn btn-primary">Book Now</button>
+                                    </td>
                                 </tr>
-                            {% endfor %}
+                                {% endfor %}
                         </table>
                         {% else %}
                         <p>No data available.</p>
@@ -95,5 +104,4 @@
         </div>
     </section>
 </body>
-
 </html>

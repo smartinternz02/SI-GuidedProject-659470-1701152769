@@ -127,46 +127,49 @@ def co2():
     
 @app.route('/ride_booking',methods=['POST','GET'])
 def ride():
+    data = []
     if 'id' in session:
         try:
-            sql = "SELECT * FROM RIDEPUBLISH"
-            stmt = ibm_db.prepare(conn,sql)
-            ibm_db.execute(stmt)
-            data = []
-            while True:
-                row = ibm_db.fetch_assoc(stmt)
-                if not row:
-                    break  # Exit the loop when there are no more rows
-                data.append(row)
-            data = data if data else []
-            print(type(data))
-            print(data)
-            return render_template("ride_booking.html",data=data)
+            if request.method == 'GET' and 'lev_form' in request.args:
+                # Handle search form submission
+                leaving_from = request.args.get('lev_form')
+                going_to = request.args.get('going_to')
+                sel_date = request.args.get('sel_date')
+
+                sql = "SELECT FULLNAME, PHONENUMBER, LOCATION, DESTINATION, NUMBEROFPEOPLE FROM RIDEPUBLISH WHERE LOCATION=? AND DESTINATION=? AND DATETIME=?"
+                stmt = ibm_db.prepare(conn, sql)
+                ibm_db.bind_param(stmt, 1, leaving_from)
+                ibm_db.bind_param(stmt, 2, going_to)
+                ibm_db.bind_param(stmt, 3, sel_date)
+                ibm_db.execute(stmt)
+                while True:
+                    row = ibm_db.fetch_assoc(stmt)
+                    if not row:
+                        break  # Exit the loop when there are no more rows
+                    data.append(row)
+                    data = data if data else []
+                    return render_template("ride_booking.html",data=data)
+            else:
+                sql = "SELECT FULLNAME, PHONENUMBER, LOCATION, DESTINATION, NUMBEROFPEOPLE FROM RIDEPUBLISH"
+                stmt = ibm_db.prepare(conn,sql)
+                ibm_db.execute(stmt)
+                data = []
+                while True:
+                    row = ibm_db.fetch_assoc(stmt)
+                    if not row:
+                        break  # Exit the loop when there are no more rows
+                    data.append(row)
+                data = data if data else []
+                # print(type(data))
+                # print(data)
+                return render_template("ride_booking.html",data=data)
         except Exception as e:
             # Handle any exceptions that may occur during database operations
             return f"An error occurred: {str(e)}"
-
+            return render_template("ride_booking.html",data=data)
     else:
-        return redirect('/')
+            return redirect('/')  
 
-
-#     num2 = request.form['publish']
-#     print(num2)
-#     sql = "SELECT * FROM RIDEPUBLISH WHERE USERID="+str(session['id'])
-#     stmt = ibm_db.prepare(conn,sql)
-#     ibm_db.execute(stmt)
-#     account = ibm_db.fetch_assoc(stmt)
-#     return render_template("ride_booking.html",num2=num2)
-    
-# @app.route('/ride_list',methods=['POST','GET'])
-# def ridel():
-#     if 'id' in session:
-#         sql = "SELECT * FROM RIDEPUBLISH WHERE USERID="+str(session['id'])
-#         stmt = ibm_db.prepare(conn,sql)
-#         ibm_db.execute(stmt)
-#         data = ibm_db.fetch_assoc(stmt)
-#         return render_template("ride_booking.html",data=data)
-       
 
 
 
