@@ -3,7 +3,7 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, session
 import ibm_db
 import ibm_boto3
-from ibm_botocore.client import Config,ClientError
+from ibm_botocore.client import Config, ClientError
 
 
 app = Flask(__name__)
@@ -17,11 +17,11 @@ COS_ENDPOINT = "https://s3.us-south.cloud-object-storage.appdomain.cloud"
 COS_API_KEY_ID = "Jf5e7IWW1w-MECWEjSeO8h7JDyxpTa16-QQ0KPyBx8_3"
 COS_INSTANCE_CRN ="crn:v1:bluemix:public:cloud-object-storage:global:a/a0de583e4eb64401b18b468751515222:7761627b-6d34-48c4-a04c-9771c3f8e625:bucket:ibm-skillbuildtest"
 
-# cos = ibm_boto3.client("s3",
-#                        ibm_api_key_id=COS_API_KEY_ID,
-#                        ibm_service_instance_id = COS_INSTANCE_CRN,
-#                        config=Config(signature_version="oauth"),
-#                        endpoing_url=COS_ENDPOINT)
+cos = ibm_boto3.client("s3",
+                       ibm_api_key_id=COS_API_KEY_ID,
+                       ibm_service_instance_id = COS_INSTANCE_CRN,
+                       config=Config(signature_version="oauth"),
+                       endpoint_url=COS_ENDPOINT)
 
 @app.route('/')
 def login():
@@ -166,7 +166,6 @@ def ride():
         except Exception as e:
             # Handle any exceptions that may occur during database operations
             return f"An error occurred: {str(e)}"
-            return render_template("ride_booking.html",data=data)
     else:
             return redirect('/')  
 
@@ -193,7 +192,7 @@ def publishing1():
         print(account)
 
         if request.method == 'POST':
-                # ProfilePic = request.files['ProfilePic']
+                ProfilePic = request.files['ProfilePic']
                 FullName = request.form['FullName']
                 PhoneNumber = request.form['PhoneNumber']
                 Email = request.form['Email']
@@ -214,33 +213,35 @@ def publishing1():
                 ibm_db.bind_param(prep_stmt,8,NumberofPeople)
                 ibm_db.bind_param(prep_stmt,9,account['USERID'])
                 ibm_db.execute(prep_stmt)
+
+                basepath = os.path.dirname(__file__)
+
+                filepath = os.path.join(basepath,'profilepic','.jpg')
+
+                ProfilePic.save(filepath)
+                cos.upload_file(Filename=filepath,
+                                Bucket='ibm-skillbuildtest', Key=FullName + '.jpg')
+                
+                print(ProfilePic)
+                sql = "SELECT * FROM REGISTER WHERE USERID="+str(session['id'])
+                stmt = ibm_db.prepare(conn,sql)
+                ibm_db.execute(stmt)
+                # row = []
+                # while True:
+                #     date = ibm_db.fetch_assoc(stmt)
+                #     if not data:
+                #         break
+                #     else:
+                #         data['USERID'] = str(data['USERID'])
+                #         row.append(data)
+                #         print('rows: ',row)
                 return redirect('/ride_booking')
     else:
             return redirect('/')
     
 
 
-        # basepath = os.path.dirname(__file__)
-
-        # filepath = os.path.join(basepath,'profilepic','.jpg')
-
-        # ProfilePic.save(filepath)
-        # cos.upload_file(Filenmae=filepath,
-        #                 Bucket='profilepictures27', Key=FullName + '.jpg')
         
-        # print(ProfilePic)
-        # sql = "SELECT * FROM RIDEPUBLISH WHERE USERID="+ str(session['USERID'])
-        # stmt = ibm_db.prepare(conn,sql)
-        # ibm_db.execute(stmt)
-        # row = []
-        # while True:
-        #     date = ibm_db.fetch_assoc(stmt)
-        #     if not data:
-        #         break
-        #     else:
-        #         data['USERID'] = str(data['USERID'])
-        #         row.append(data)
-        #     print('rows: ',row)
     
     
 
