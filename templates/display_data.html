@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object Display</title>
+</head>
+<body>
+    <h1>Object Display</h1>
+    <ul>
+        {% for key in object_keys %}
+            <li><img src="https://s3.us-south.cloud-object-storage.appdomain.cloud./ibm-skillbuildtest/{{ key }}" style="width: 50px; height: 50px;"></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

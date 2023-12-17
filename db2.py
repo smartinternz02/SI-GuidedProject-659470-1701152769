@@ -15,7 +15,10 @@ print("connected")
 
 COS_ENDPOINT = "https://s3.us-south.cloud-object-storage.appdomain.cloud"
 COS_API_KEY_ID = "Jf5e7IWW1w-MECWEjSeO8h7JDyxpTa16-QQ0KPyBx8_3"
-COS_INSTANCE_CRN ="crn:v1:bluemix:public:cloud-object-storage:global:a/a0de583e4eb64401b18b468751515222:7761627b-6d34-48c4-a04c-9771c3f8e625:bucket:ibm-skillbuildtest"
+COS_INSTANCE_CRN ="crn:v1:bluemix:public:cloud-object-storage:global:a/a0de583e4eb64401b18b468751515222:7761627b-6d34-48c4-a04c-9771c3f8e625::"
+COS_BUCKET_NAME = "ibm-skillbuildtest"
+COS_AUTH_ENDPOINT = "https://s3.us-south.cloud-object-storage.appdomain.cloud"
+
 
 cos = ibm_boto3.client("s3",
                        ibm_api_key_id=COS_API_KEY_ID,
@@ -114,7 +117,7 @@ def login1():
 def logout():
     session.pop('loggedin',None)
     session.pop('id',None)
-    session.pop('userid',None)
+    session.pop('USERNAME',None)
     return redirect('/')
 
 
@@ -150,26 +153,49 @@ def ride():
                     data = data if data else []
                     return render_template("ride_booking.html",data=data)
             else:
-                sql = "SELECT FULLNAME, PHONENUMBER, LOCATION, DESTINATION, NUMBEROFPEOPLE FROM RIDEPUBLISH"
-                stmt = ibm_db.prepare(conn,sql)
-                ibm_db.execute(stmt)
-                data = []
-                while True:
-                    row = ibm_db.fetch_assoc(stmt)
-                    if not row:
-                        break  # Exit the loop when there are no more rows
-                    data.append(row)
-                data = data if data else []
-                # print(type(data))
-                # print(data)
-                return render_template("ride_booking.html",data=data)
+                    sql = "SELECT FULLNAME, PHONENUMBER, LOCATION, DESTINATION, NUMBEROFPEOPLE FROM RIDEPUBLISH"
+                    stmt = ibm_db.prepare(conn, sql)
+                    ibm_db.execute(stmt)
+                    data = []
+                    while True:
+                        row = ibm_db.fetch_assoc(stmt)
+                        if not row:
+                            break  # Exit the loop when there are no more rows
+                        data.append(row)
+                    
+                    data = data if data else []
+                    # response = cos.list_objects(Bucket=COS_BUCKET_NAME)
+                    # images = []
+                    # # # # Extract user data from object keys
+                    # for obj in response.get('Contents', []):
+                    #     image_url = obj['Key'].split('.')[0]  # Assuming object keys follow the pattern 'FullName.jpg'
+                    #     image_url = cos.generate_presigned_url(
+                    #         'get_object',
+                    #         Params={'Bucket': COS_BUCKET_NAME, 'Key': obj['Key']},
+                    #         ExpiresIn=3600
+                    #     )
+                    #     data.append({'image_url': image_url})
+                    
+                    return render_template("ride_booking.html", data=data)
+                
         except Exception as e:
-            # Handle any exceptions that may occur during database operations
+                    # Handle any exceptions that may occur during database operations
             return f"An error occurred: {str(e)}"
     else:
-            return redirect('/')  
+                    return redirect('/')  
 
 
+@app.route('/display_data')
+def display_data():
+   try:
+        # Fetch object keys from the bucket
+        response = cos.list_objects(Bucket=COS_BUCKET_NAME)
+        object_keys = [obj['Key'] for obj in response.get('Contents', [])]
+
+        # Pass the object keys to the template
+        return render_template("display_data.html", object_keys=object_keys)
+   except Exception as e:
+        return f"An error occurred: {str(e)}"
 
 
 @app.route("/publishDetails1")
@@ -226,27 +252,19 @@ def publishing1():
                 sql = "SELECT * FROM REGISTER WHERE USERID="+str(session['id'])
                 stmt = ibm_db.prepare(conn,sql)
                 ibm_db.execute(stmt)
-                # row = []
-                # while True:
-                #     date = ibm_db.fetch_assoc(stmt)
-                #     if not data:
-                #         break
-                #     else:
-                #         data['USERID'] = str(data['USERID'])
-                #         row.append(data)
-                #         print('rows: ',row)
+                row = []
+                data = []
+                while True:
+                    date = ibm_db.fetch_assoc(stmt)
+                    if not data:
+                        break
+                    else:
+                        data['USERID'] = str(data['USERID'])
+                        row.append(data)
+                        print('rows: ',row)
                 return redirect('/ride_booking')
     else:
-            return redirect('/')
+            return redirect('/')  
     
-
-
-        
-    
-    
-
-
-        
-
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug= True)
